@@ -1,6 +1,7 @@
 [submodule "sdk"]
 	path = sdk
-	url = https://github.com/geffencooper/maxim-sdk_ECE196.git
+	url = git@github.com:geffencooper/maxim-sdk_ECE196.git
+	branch = master
 [submodule "distiller"]
 	path = distiller
 	url = https://github.com/MaximIntegratedAI/distiller.git
