@@ -1,0 +1,39 @@
+# CHW (big data) configuration for MNIST
+
+arch: GeffenNet
+dataset: MNIST
+
+# Define layer parameters in order of the layer sequence
+layers:
+- pad: 1 # 1x28x28 --> 32x28x28
+  activate: ReLU
+  out_offset: 0x2000
+  processors: 0x0000000000000001
+  data_format: HWC
+  op: conv2d
+- pad: 2 # 32x28x28 --> 32x16x16
+  max_pool: 2
+  pool_stride: 2
+  activate: ReLU
+  out_offset: 0
+  processors: 0xffffffff00000000
+  op: conv2d
+- max_pool: 2 # 32x16x16 --> 32x8x8
+  pool_stride: 2
+  pad: 1
+  activate: ReLU
+  out_offset: 0x2000
+  processors: 0xffffffff00000000
+  op: conv2d
+- max_pool: 2 # 32x8x8 --> 16x4x4
+  pool_stride: 2
+  pad: 1
+  activate: ReLU
+  out_offset: 0
+  processors: 0xffffffff00000000
+  op: conv2d
+- op: FC # 16x4x4 --> 256 x 1 --> 10 x 1
+  flatten: true
+  out_offset: 0x2000
+  output_width: 32
+  processors: 0x000000000000ffff

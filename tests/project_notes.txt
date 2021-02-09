@@ -1,0 +1,21 @@
+Project Startup Steps:
+
+1. SSH into raspberry pi: ssh_into_rpi.bash
+   -this script is in usr/local/bin so is accessible globally
+	 -when ssh into rpi, some other setup procedures are done from added lines in ~/.bashrc
+	 -these include sourcing ros melodic, setting the pi as the master, and starting up pigpio
+   -pigpio requires admin access so the password will be required upon login again
+
+2. In the home directory should be a ros workspace (for this project it is called rc_ws
+   -you can make a new catkin workspace using mkdir -p ~/wkspc_name/src, then cd, then catkin_make
+	 -once you make/enter the workspace, source devel/setup.bash to use ros in this ws
+	 -next we will make/enter a ros package, in this case the package is rc_utils
+	   --a package is the software unit in ros and is basically where the source code is
+		 --a package needs a .xml and a cmake list file to provide metadata/dependecy info
+		 --to create a package first enter the src directory, then type catkin_create_pkg pkg_name deps
+		 --once the package is made, need to build it using the catkin_make, then source devel/setup.bash
+
+3. Interacting with ros nodes (source code)
+   --in ros a node is essentially just a program that talks with other programs (nodes)
+	 --nodes publish messages to a topic whiich other nodes can subscribe to
+	 --once a rosnode is made you need to run roscore before you can run the rosnode
