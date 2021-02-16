@@ -155,6 +155,8 @@ def convert_checkpoint(input_file, output_file, arguments):
                     clamp_bits = tc.dev.DEFAULT_WEIGHT_BITS  # Default to 8 bits
 
             factor = 2**(clamp_bits-1) * sat_fn(checkpoint_state[k])
+            print("factor: ",factor)
+            #factor=0.9
 
             if arguments.verbose:
                 print(k, 'avg_max:', unwrap(avg_max(checkpoint_state[k])),
@@ -162,12 +164,18 @@ def convert_checkpoint(input_file, output_file, arguments):
                       'mean:', unwrap(checkpoint_state[k].mean()),
                       'factor:', unwrap(factor),
                       'bits:', clamp_bits)
+                
+            print("weights:", checkpoint_state[k])
+            
             weights = factor * checkpoint_state[k]
+            
+            print("weights*factor", weights)
 
             # Ensure it fits and is an integer
             weights = weights.add(.5).floor().clamp(min=-(2**(clamp_bits-1)),
                                                     max=2**(clamp_bits-1)-1)
-
+            
+            print("weights_integer", weights)
             # Store modified weight back into model
             new_checkpoint_state[k] = weights
 
@@ -189,7 +197,9 @@ def convert_checkpoint(input_file, output_file, arguments):
                           'mean:', unwrap(checkpoint_state[bias_name].mean()),
                           'factor:', unwrap(factor),
                           'bits:', clamp_bits)
+                print("bias:", checkpoint_state[bias_name])
                 bias = factor * checkpoint_state[bias_name]
+                print("bias*factor", bias)
 
                 # Save conv biases so PyTorch can still use them to run a model. This needs
                 # to be reversed before loading the weights into the hardware.
@@ -202,7 +212,7 @@ def convert_checkpoint(input_file, output_file, arguments):
                 # Ensure it fits and is an integer
                 bias = bias.add(.5).floor().clamp(min=-(2**(clamp_bits+tc.dev.ACTIVATION_BITS-2)),
                                                   max=2**(clamp_bits+tc.dev.ACTIVATION_BITS-2)-1)
-
+                print("bias_integer:", bias)
                 # Store modified bias back into model
                 new_checkpoint_state[bias_name] = bias
 

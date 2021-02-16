@@ -1,0 +1,65 @@
+# CHW (big data) configuration for MNIST
+
+arch: geffnet
+dataset: geffnet_faces
+
+# Define layer parameters in order of the layer sequence
+layers:
+- pad: 1 # 1x128x128 --> 10x128x128
+  activate: ReLU
+  out_offset: 0x1000
+  processors: 0x0000000000000001
+  data_format: HWC
+  op: conv2d
+  kernel_size: 3x3
+  streaming: true
+- max_pool: 2 # 10x128x128 --> 20x64x64
+  pool_stride: 2
+  pad: 1
+  activate: ReLU
+  out_offset: 0x2000
+  processors: 0x0000000000003ff0
+  data_format: HWC
+  kernel_size: 3x3
+  streaming: true
+  op: conv2d
+- max_pool: 2 # 20x64x64 --> 30x32x32
+  pool_stride: 2
+  pad: 1
+  activate: ReLU
+  out_offset: 0x0000
+  processors: 0x00000000000fffff
+  data_format: HWC
+  op: conv2d
+- max_pool: 2 # 30x32x32 --> 30x16x16
+  pool_stride: 2
+  pad: 1
+  activate: ReLU
+  out_offset: 0x2000
+  processors: 0xfffffff300000000
+  data_format: HWC
+  op: conv2d
+- max_pool: 2 # 30x16x16 --> 30x8x8
+  pool_stride: 2
+  pad: 1
+  activate: ReLU
+  out_offset: 0x0000
+  processors: 0x00000000fffffff3
+  op: conv2d
+- pad: 2 # 30x8x8 --> 30x10x10
+  activate: ReLU
+  out_offset: 0x2000
+  processors: 0xfffffff300000000
+  op: conv2d
+- max_pool: 2 # 30x10x10 --> 30x5x5
+  pool_stride: 2
+  pad: 1
+  activate: ReLU
+  out_offset: 0x0000
+  processors: 0x00000000fffffff3
+  op: conv2d
+- op: mlp # 30x5x5 --> 1x750 --> 1x2
+  flatten: true
+  out_offset: 0x2000
+  output_width: 32
+  processors: 0xfffffff300000000
