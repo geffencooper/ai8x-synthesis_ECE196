@@ -1,0 +1,1 @@
+./ai8xize.py --verbose --log --test-dir sdk/Examples/MAX78000/CNN --prefix geffnet_CHW --checkpoint-file trained/geffnet_q.pth.tar --config-file networks/geffnet.yaml --device MAX78000 --softmax --compact-data --mexpress --timer 0 --display-checkpoint
