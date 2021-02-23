@@ -1,2 +1,2 @@
 #!/bin/sh
-./quantize.py trained/regression.pth.tar trained/regression_q.pth.tar --device MAX78000 -v "$@"
+./quantize.py trained/mini_vgg_net_bb.pth.tar trained/mini_vgg_net_bb_q.pth.tar --device MAX78000 -v "$@"

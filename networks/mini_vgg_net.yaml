@@ -1,5 +1,5 @@
-arch: mini_vgg_net
-dataset: faces_and_non_faces_80
+arch: mini_vgg_net_bb
+dataset: bb
 
 # Define layer parameters in order of the layer sequence
 layers:
@@ -78,4 +78,3 @@ layers:
   out_offset: 0x0
   output_width: 32
   processors: 0x3ff0000000000000
-

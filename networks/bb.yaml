@@ -1,49 +1,89 @@
-# CHW (big data) configuration for MNIST
-
-arch: geffennet_p3
-dataset: geffen_bb
+arch: mini_vgg_net_bb
+dataset: bb
 
 # Define layer parameters in order of the layer sequence
 layers:
-- pad: 1 # 1x64x64 --> 30x64x64
+- pad: 1 # 1x80x80 --> 8x80x80        conv1
   activate: ReLU
-  out_offset: 0x2000
+  out_offset: 0x0
   processors: 0x0000000000000001
   data_format: CHW
   op: conv2d
-- max_pool: 2 # 30x64x64 --> 30x32x32
-  pool_stride: 2
-  pad: 1
+- pad: 1 # 8x80x80 --> 8x80x80        conv2
   activate: ReLU
-  out_offset: 0
-  processors: 0x00000000fffffff3
-  data_format: HWC
+  out_offset: 0x0
+  processors: 0x0000000000000ff0
   op: conv2d
-- max_pool: 2 # 30x32x32 --> 30x16x16
-  pool_stride: 2
-  pad: 1
+- pad: 1 # 8x80x80 --> 16x40x40       conv3
   activate: ReLU
-  out_offset: 0x2000
-  processors: 0x00000000fffffff3
-  data_format: HWC
-  op: conv2d
-- max_pool: 2 # 30x16x16 --> 30x8x8
+  out_offset: 0x0
+  processors: 0x00000000000ff000
+  max_pool: 2 
   pool_stride: 2
-  pad: 1
+  op: conv2d
+- pad: 1 # 16x40x40 --> 16x40x40      conv4
   activate: ReLU
-  out_offset: 0
-  processors: 0x00000000fffffff3
-  data_format: HWC
+  out_offset: 0x0
+  processors: 0x000000ffff000000
   op: conv2d
-- max_pool: 2 # 30x8x8 --> 30x4x4
-  pool_stride: 2
-  pad: 1
+- pad: 1 # 16x40x40 --> 32x20x20      conv5
   activate: ReLU
   out_offset: 0x2000
-  processors: 0x00000000fffffff3
+  processors: 0x000000000000ffff
+  max_pool: 2 
+  pool_stride: 2
   op: conv2d
-- op: mlp # 10x4x4 --> 1x160 --> 1x2
+- pad: 1 # 32x20x20 --> 32x20x20      conv6
+  activate: ReLU
+  out_offset: 0x0
+  processors: 0x00000000ffffffff
+  op: conv2d
+- pad: 1 # 32x20x20 --> 64x10x10      conv7
+  activate: ReLU
+  out_offset: 0x2000
+  processors: 0x00000000ffffffff
+  max_pool: 2 
+  pool_stride: 2
+  op: conv2d
+- pad: 1 # 64x10x10 --> 64x10x10      conv8
+  activate: ReLU
+  out_offset: 0x0
+  processors: 0xffffffffffffffff
+  op: conv2d
+- pad: 2 # 64x10x10 --> 64x6x6       conv9
+  activate: ReLU
+  out_offset: 0x2000
+  processors: 0xffffffffffffffff
+  max_pool: 2 
+  pool_stride: 2
+  op: conv2d
+- pad: 1 # 64x6x6 --> 64x3x3       conv10
+  activate: ReLU
+  out_offset: 0x0
+  processors: 0xffffffffffffffff
+  max_pool: 2 
+  pool_stride: 2
+  op: conv2d
+- pad: 1 # 64x3x3 --> 64x3x3       conv11
+  activate: ReLU
+  out_offset: 0x2000
+  processors: 0xffffffffffffffff
+  op: conv2d
+- op: mlp # 64x3x3 --> 1x576 --> 1x10  fc1
   flatten: true
-  out_offset: 0x1000
-  output_width: 32
-  processors: 0x00000000000003ff
+  in_offset: 0x2000
+  out_offset: 0x0
+  processors: 0xffffffffffffffff
+- op: mlp # 64x3x3 --> 1x576 --> 1x4  fc3
+  flatten: true
+  in_offset: 0x2000
+  out_offset: 0x6000
+  output_width: 8
+  processors: 0xffffffffffffffff
+- op: mlp # 1x10 --> 1x2                fc2
+  flatten: true
+  in_offset: 0x0
+  out_offset: 0x4000
+  output_width: 8
+  processors: 0x3ff0000000000000
+
