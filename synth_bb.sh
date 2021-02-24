@@ -1,1 +1,1 @@
-./ai8xize.py --verbose --log --test-dir sdk/Examples/MAX78000/CNN --prefix mini_vgg_bb --checkpoint-file trained/mini_vgg_net_bb_q.pth.tar --config-file networks/bb.yaml --device MAX78000 --compact-data --mexpress --timer 0 --display-checkpoint
+./ai8xize.py --verbose --log --test-dir sdk/Examples/MAX78000/CNN --prefix bb --checkpoint-file trained/bb_q.pth.tar --config-file networks/bb.yaml --device MAX78000 --compact-data --mexpress --timer 0 --display-checkpoint

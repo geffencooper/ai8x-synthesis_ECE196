@@ -1,5 +1,5 @@
-arch: mini_vgg_net_bb
-dataset: bb
+arch: mini_vgg_net
+dataset: faces_and_non_faces_80
 
 # Define layer parameters in order of the layer sequence
 layers:
@@ -38,19 +38,19 @@ layers:
   out_offset: 0x0
   processors: 0x00000000ffffffff
   op: conv2d
-- pad: 1 # 32x20x20 --> 64x10x10      conv7
+- pad: 2 # 32x20x20 --> 64x12x12      conv7
   activate: ReLU
   out_offset: 0x2000
   processors: 0x00000000ffffffff
   max_pool: 2 
   pool_stride: 2
   op: conv2d
-- pad: 1 # 64x10x10 --> 64x10x10      conv8
+- pad: 1 # 64x12x12 --> 64x12x12      conv8
   activate: ReLU
   out_offset: 0x0
   processors: 0xffffffffffffffff
   op: conv2d
-- pad: 2 # 64x10x10 --> 64x6x6       conv9
+- pad: 1 # 64x12x12 --> 64x6x6       conv9
   activate: ReLU
   out_offset: 0x2000
   processors: 0xffffffffffffffff
@@ -64,14 +64,9 @@ layers:
   max_pool: 2 
   pool_stride: 2
   op: conv2d
-- pad: 1 # 64x3x3 --> 64x3x3       conv11
-  activate: ReLU
-  out_offset: 0x2000
-  processors: 0xffffffffffffffff
-  op: conv2d
 - op: mlp # 64x3x3 --> 1x576 --> 1x10  fc1
   flatten: true
-  out_offset: 0x0
+  out_offset: 0x2000
   processors: 0xffffffffffffffff
 - op: mlp # 1x10 --> 1x2                fc2
   flatten: true
