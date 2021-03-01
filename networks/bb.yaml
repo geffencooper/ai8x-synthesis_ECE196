@@ -64,19 +64,20 @@ layers:
   max_pool: 2 
   pool_stride: 2
   op: conv2d
-- op: mlp # 64x3x3 --> 1x576 --> 1x10  fc1
+- op: mlp # 64x3x3 --> 1x576 --> 1x4  fc1 // output a bounding box
   flatten: true
   out_offset: 0x2000
-  processors: 0xffffffffffffffff
-- op: mlp # 1x10 --> 1x2                fc2
-  flatten: true
-  out_offset: 0x0
-  output_width: 8
-  processors: 0x3ff0000000000000
-- op: mlp # 64x3x3 --> --> 1x2                fc3
-  in_sequences: 9
-  in_offset: 0x0
-  flatten: true
-  out_offset: 0x4000
   output_width: 32
   processors: 0xffffffffffffffff
+# - op: mlp # 1x10 --> 1x2                fc2
+#   flatten: true
+#   out_offset: 0x0
+#   output_width: 8
+#   processors: 0x3ff0000000000000
+# - op: mlp # 64x3x3 --> --> 1x2                fc3
+#   in_sequences: 9
+#   in_offset: 0x0
+#   flatten: true
+#   out_offset: 0x4000
+#   output_width: 32
+#   processors: 0xffffffffffffffff
