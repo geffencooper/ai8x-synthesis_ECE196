@@ -77,7 +77,7 @@ layers:
 
   # this layer should get its input from conv10 as specified by in_sequences
 - op: mlp # 64x3x3 --> --> 1x2          fc3 bounding box output
-  in_sequences: 10
+  in_sequences: 9
   in_offset: 0x0
   flatten: true
   out_offset: 0x6000
