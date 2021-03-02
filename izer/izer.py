@@ -158,7 +158,7 @@ def main():
                         assert output_channels[in_sequences[ll][0]] \
                             == output_channels[in_sequences[ll][i]]
             else:
-                input_channels[ll] = output_channels[in_sequences[ll]]
+                input_channels[ll] = output_channels[in_sequences[ll]] * 9 # just for Geffen
 
         if input_channels[ll] <= 0:
             input_channels[ll] = output_channels[prev_ll]
@@ -325,9 +325,9 @@ def main():
                        'first layer.')
 
         # Check all but last layer
-        if ll != final_layer:
-            if output_width[ll] != 8:
-                eprint(f'`output_width` must be 8 for intermediate layer {ll}.')
+        #if ll != final_layer:
+        #    if output_width[ll] != 8:
+        #        eprint(f'`output_width` must be 8 for intermediate layer {ll}.')
 
         if in_sequences[ll] is not None:
             if tc.dev.SUPPORT_LINK_LAYER:

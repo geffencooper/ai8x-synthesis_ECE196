@@ -74,12 +74,14 @@ layers:
   out_offset: 0x4000
   output_width: 32
   processors: 0x3ff0000000000000
+  output_processors: 0x0000000000000003
 
   # this layer should get its input from conv10 as specified by in_sequences
 - op: mlp # 64x3x3 --> --> 1x2          fc3 bounding box output
   in_sequences: 9
   in_offset: 0x0
   flatten: true
-  out_offset: 0x6000
+  out_offset: 0x4008
   output_width: 32
   processors: 0xffffffffffffffff
+  output_processors: 0x000000000000000f
