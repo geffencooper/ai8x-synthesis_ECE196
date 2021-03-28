@@ -1,0 +1,1 @@
+./ai8xize.py --verbose --log --test-dir sdk/Examples/MAX78000/CNN --prefix Geffen_mnist --checkpoint-file trained/simplemnist_q.pth.tar --config-file networks/simplemnist.yaml --device MAX78000 --compact-data --mexpress --timer 0 --display-checkpoint

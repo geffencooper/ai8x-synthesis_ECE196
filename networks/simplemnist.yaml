@@ -1,0 +1,43 @@
+
+arch: simplemnist
+dataset: MNIST
+
+# Define layer parameters in order of the layer sequence
+layers:
+- pad: 1 # 1x28x28 --> 8x28x28
+  activate: ReLU
+  out_offset: 0x0
+  processors: 0x0000000000000001
+  data_format: CHW
+  op: conv2d
+- pad: 2 # 8x28x28 --> 16x14x14 --> 16x16x16
+  max_pool: 2
+  pool_stride: 2
+  activate: ReLU
+  out_offset: 0x0
+  processors: 0x0000000000000ff0
+  op: conv2d
+- pad: 1 # 16x16x16 --> 16x16x16
+  activate: ReLU
+  out_offset: 0x0
+  processors: 0x00000000ffff0000
+  op: conv2d
+- max_pool: 2 # 16x16x16 --> 32x8x8
+  pool_stride: 2
+  pad: 1
+  activate: ReLU
+  out_offset: 0x2000
+  processors: 0x000000000000ffff
+  op: conv2d
+- max_pool: 2 # 32x8x8 --> 32x4x4
+  pool_stride: 2
+  pad: 1
+  activate: ReLU
+  out_offset: 0x0
+  processors: 0x00000000ffffffff
+  op: conv2d
+- op: FC # 32x4x4 --> 512 x 1 --> 10 x 1
+  flatten: true
+  out_offset: 0x2000
+  output_width: 32
+  processors: 0x00000000ffffffff
